@@ -26,6 +26,10 @@ if ticker and is_valid_ticker(ticker):
         with st.spinner("Running model..."):
             time.sleep(2)
             prediction = predict(data_set)
+
+            #Display raw table as a table
+            st.dataframe(data_set.loc[:,["Tomorrow", "Target"]], use_container_width=True)
+
             st.write("According to the model, there is a " + str(prediction) + "% chance that " + ticker + " will increase tomorrow" )
 
             if prediction > 50:
