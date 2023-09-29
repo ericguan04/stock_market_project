@@ -1,8 +1,8 @@
 ## Stock Market Prediction Project
 Personal project built with:
-*XGBoost: ML Decision Tree algorithm used for predicting tomorrow's stock data
-*yfinance: For retrieving up-to-date stock market data sets
-*Streamlit: Used to visualize the project on the web
+* XGBoost: ML Decision Tree algorithm used for predicting tomorrow's stock data
+* yfinance: For retrieving up-to-date stock market data sets
+* Streamlit: Used to visualize the project on the web
 
 This project is a web application that allows the user to input a ticker symbol and view raw stock data, such the dataframe and chart
 
