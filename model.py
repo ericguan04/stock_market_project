@@ -56,7 +56,7 @@ def predict(data_set):
 
     #Define the features and the target variable
     #Features(x) will be used to predict the target(y)
-    features = ["Open", "High", "Low", "Volume", "Close"]
+    features = trendFeatures(data_set)
     target = "Target"
 
     X_train = train_data[features]
@@ -75,3 +75,25 @@ def predict(data_set):
     #Prediction for tomorrow
     return round(y_pred[-1]*100, 2)
 
+def trendFeatures(data_set):
+    #Calculate mean close price from last 2 days, 1 week, 3 months, 1 year, 4 years
+    #Provide more information to algorithm so it can make better predictions
+    horizons = [2, 5, 60, 250, 1000]
+
+    new_predictors = []
+
+    for horizon in horizons:
+        #Calculates the ratio from close price to mean close price over a given period of time
+        rolling_averages = data_set.rolling(horizon).mean()
+        
+        ratio_column = f"Close_Ratio_{horizon}"
+        data_set[ratio_column] = data_set["Close"] / rolling_averages["Close"]
+        
+        #On any given day,looks at the given period of time and sees the number of price increases
+        trend_column = f"Trend_{horizon}"
+        data_set[trend_column] = data_set.shift(1).rolling(horizon).sum()["Target"]
+        
+        #These trends (price today compared to price yesterday) is more informative than static numbers
+        new_predictors += [ratio_column, trend_column]
+
+    return new_predictors
