@@ -1,6 +1,6 @@
 import streamlit as st
 import time
-from model import predict, get_data, plot_data, is_valid_ticker
+from model import predict, get_data, plot_data, is_valid_ticker, trendFeatures
 
 st.set_page_config(page_title="Stock Market Prediction", page_icon=":chart_with_upwards_trend:", layout="wide")
 
@@ -24,11 +24,13 @@ if ticker and is_valid_ticker(ticker):
     st.divider()
     if st.button("Make Prediction"):
         with st.spinner("Running model..."):
-            time.sleep(2)
-            prediction = predict(data_set)
+            time.sleep(1.5)
+            #Create new features and update the data set
+            predictors, data_set = trendFeatures(data_set)
+            prediction = predict(data_set, predictors)
 
-            #Display raw table as a table
-            st.dataframe(data_set.loc[:,["Tomorrow", "Target"]], use_container_width=True)
+            #Display data used by the ML model for prediction
+            st.dataframe(data_set.loc[:,["Tomorrow", "Target"] + predictors], use_container_width=True)
 
             st.write("According to the model, there is a " + str(prediction) + "% chance that " + ticker + " will increase tomorrow" )
 
