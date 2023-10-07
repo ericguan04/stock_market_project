@@ -3,6 +3,7 @@ import xgboost as xgb
 import matplotlib.pyplot as plt
 from plotly import graph_objs as go
 import yfinance as yf
+from sklearn.ensemble import RandomForestClassifier
 
 #Returns True if ticker is valid and returns False when ticker is invalid (exception is thrown)
 def is_valid_ticker(ticker):
@@ -73,6 +74,9 @@ def predict(data_set, predictors):
     #1 when price goes up, 0 when price goes down
     data_set["Target"] = (data_set["Tomorrow"] > data_set["Close"]).astype(int)
 
+    #Declare the RandomForestClassifier model used for training
+    #model = RandomForestClassifier(n_estimators=100, min_samples_split=100, random_state=1)
+
     #Split the data into training and testing data sets
     train_data = data_set.iloc[:-100]
     test_data = data_set.iloc[-100:]
@@ -80,24 +84,24 @@ def predict(data_set, predictors):
     #Define the features and the target variable
     #Features(x) will be used to predict the target(y)
     features = predictors
-    target = "Target"
 
     X_train = train_data[features]
-    y_train = train_data[target]
+    y_train = train_data["Target"]
 
     X_test = test_data[features]
-    y_test = test_data[target]
+    y_test = test_data["Target"]
 
     #Create and train the model
     model = xgb.XGBRegressor()
     model.fit(X_train, y_train)
+    #model.fit(X_train, y_train)
     
     #Make and show the predictions on the test data
     y_pred = model.predict(X_test)
-    return y_pred
+    #return y_pred
     
     #Prediction for tomorrow
-    #return round(y_pred[-1]*100, 2)
+    return round(y_pred[-1]*100, 2)
 
 #Create a back testing algorithm to see how accurate the model is.
 #Instead of comparing it with the test set, back testing will see how to model does throughout 
