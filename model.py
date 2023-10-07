@@ -94,6 +94,19 @@ def predict(data_set, predictors):
     
     #Make and show the predictions on the test data
     y_pred = model.predict(X_test)
+    return y_pred
     
     #Prediction for tomorrow
-    return round(y_pred[-1]*100, 2)
+    #return round(y_pred[-1]*100, 2)
+
+#Create a back testing algorithm to see how accurate the model is.
+#Instead of comparing it with the test set, back testing will see how to model does throughout 
+#the entire data set over the years.
+def backTest(data_set, predictors, start=2500, step=250):
+    all_predictions = []
+
+    for i in range(start, data_set.shape[0], step):
+        y_pred = predict(data_set, predictors)
+        all_predictions.append(y_pred)
+    
+    return pd.concat(all_predictions)
