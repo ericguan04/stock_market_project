@@ -4,6 +4,7 @@
     "Delisted",
     "matplotlib",
     "pyplot",
+    "selectbox",
     "streamlit",
     "xgboost",
     "yfinance"

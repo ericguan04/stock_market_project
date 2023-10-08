@@ -1,6 +1,6 @@
 import streamlit as st
 import time
-from model import predict, get_data, plot_data, is_valid_ticker, trendFeatures
+from model import predictXGBoost, predictRandomForest, get_data, plot_data, is_valid_ticker, trendFeatures
 
 st.set_page_config(page_title="Stock Market Prediction", page_icon=":chart_with_upwards_trend:", layout="wide")
 
@@ -22,12 +22,18 @@ if ticker and is_valid_ticker(ticker):
     st.plotly_chart(fig, use_container_width=True)
 
     st.divider()
+    #Choose the ML prediction model used
+    model = st.selectbox("Select Prediction Model", ("XGBoost Regressor", "Random Forest Classifier"))
+
     if st.button("Make Prediction"):
         with st.spinner("Running model..."):
             time.sleep(1.5)
             #Create new features and update the data set
             predictors, data_set = trendFeatures(data_set)
-            prediction = predict(data_set, predictors)
+            if model == "XGBoost Regressor":
+                prediction = predictXGBoost(data_set, predictors)
+            elif model == "Random Forest Classifier":
+                prediction = predictRandomForest(data_set, predictors)
 
             #Display data used by the ML model for prediction
             st.dataframe(data_set.loc[:,["Tomorrow", "Target"] + predictors], use_container_width=True)

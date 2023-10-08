@@ -66,16 +66,13 @@ def trendFeatures(data_set):
     return new_predictors, data_set
 
 #Runs XGBoost ML Algorithm to predict whether tomorrow's stock price increases or decreases
-def predict(data_set, predictors):
+def predictXGBoost(data_set, predictors):
     #Create a "Tomorrow" Close Price column by shifting Close Price data by -1
     data_set["Tomorrow"] = data_set["Close"].shift(-1)
 
     #Create "Target" column that displays whether the price increased or decreased.
     #1 when price goes up, 0 when price goes down
     data_set["Target"] = (data_set["Tomorrow"] > data_set["Close"]).astype(int)
-
-    #Declare the RandomForestClassifier model used for training
-    #model = RandomForestClassifier(n_estimators=100, min_samples_split=100, random_state=1)
 
     #Split the data into training and testing data sets
     train_data = data_set.iloc[:-100]
@@ -94,7 +91,42 @@ def predict(data_set, predictors):
     #Create and train the model
     model = xgb.XGBRegressor()
     model.fit(X_train, y_train)
-    #model.fit(X_train, y_train)
+    
+    #Make and show the predictions on the test data
+    y_pred = model.predict(X_test)
+    #return y_pred
+    
+    #Prediction for tomorrow
+    return round(y_pred[-1]*100, 2)
+
+#Runs Random Forest ML Algorithm to predict whether tomorrow's stock price increases or decreases
+def predictRandomForest(data_set, predictors):
+    #Create a "Tomorrow" Close Price column by shifting Close Price data by -1
+    data_set["Tomorrow"] = data_set["Close"].shift(-1)
+
+    #Create "Target" column that displays whether the price increased or decreased.
+    #1 when price goes up, 0 when price goes down
+    data_set["Target"] = (data_set["Tomorrow"] > data_set["Close"]).astype(int)
+
+    #Declare the RandomForestClassifier model used for training
+    model = RandomForestClassifier(n_estimators=100, min_samples_split=100, random_state=1)
+
+    #Split the data into training and testing data sets
+    train_data = data_set.iloc[:-100]
+    test_data = data_set.iloc[-100:]
+
+    #Define the features and the target variable
+    #Features(x) will be used to predict the target(y)
+    features = predictors
+
+    X_train = train_data[features]
+    y_train = train_data["Target"]
+
+    X_test = test_data[features]
+    y_test = test_data["Target"]
+
+    #Create and train the model
+    model.fit(X_train, y_train)
     
     #Make and show the predictions on the test data
     y_pred = model.predict(X_test)
@@ -110,7 +142,7 @@ def backTest(data_set, predictors, start=2500, step=250):
     all_predictions = []
 
     for i in range(start, data_set.shape[0], step):
-        y_pred = predict(data_set, predictors)
+        y_pred = predictXGBoost(data_set, predictors)
         all_predictions.append(y_pred)
     
     return pd.concat(all_predictions)
