@@ -18,5 +18,5 @@ Uses "Target" as the target
 
 ## Areas to improve: 
 Work on improving the accuracy of the model by tweaking with the XGBoost parameters
-Fix the Random Forest Classifier model type by cleaning the data
+Fix the Random Forest Classifier model. The model always displays 100% accuracy, which means there is a mistake
 Complete the back testing algorithm to assess model accuracy

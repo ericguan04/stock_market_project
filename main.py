@@ -28,8 +28,10 @@ if ticker and is_valid_ticker(ticker):
     if st.button("Make Prediction"):
         with st.spinner("Running model..."):
             time.sleep(1.5)
-            #Create new features and update the data set
+            #Create new features and update the data set, remove all NA boxes
             predictors, data_set = trendFeatures(data_set)
+            data_set = data_set.dropna()
+            
             if model == "XGBoost Regressor":
                 prediction = predictXGBoost(data_set, predictors)
             elif model == "Random Forest Classifier":
