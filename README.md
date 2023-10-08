@@ -1,12 +1,13 @@
 ## Stock Market Prediction Project
 Personal project built with:
 * XGBoost: ML Decision Tree algorithm used for predicting tomorrow's stock data
+* sklearn: Random Forest Classifier (ML Decision Tree algorithm) used for prediction
 * yfinance: For retrieving up-to-date stock market data sets
 * Streamlit: Used to visualize the project on the web
 
 This project is a web application that allows the user to input a ticker symbol and view raw stock data, such the dataframe and chart
 
-Includes a button to run the prediction algorithm which returns the likelihood the stock will increase tomorrow
+Includes an option to choose the desired model type and a button to run the prediction algorithm which returns the likelihood the stock will increase tomorrow
 
 ## How it Works
 New column called "Tomorrow" is created by shifting the closing price by 1, revealing tomorrow's stock price for each day. 
@@ -17,4 +18,5 @@ Uses "Target" as the target
 
 ## Areas to improve: 
 Work on improving the accuracy of the model by tweaking with the XGBoost parameters
-Create more in depth features by selecting time frames of the stock data rather than just the individual day
+Fix the Random Forest Classifier model type by cleaning the data
+Complete the back testing algorithm to assess model accuracy
