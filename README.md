@@ -20,3 +20,4 @@ Uses "Target" as the target
 * Work on improving the accuracy of the XGBoost model by adjusting the parameters
 * Complete the back testing algorithm to assess model accuracy
 * Try to host the web app on a platform so it doesn't have to be hosted locally
+* For future projects, add venv and vscode to gitignore file before uploading (better practice)
