@@ -34,17 +34,26 @@ if ticker and is_valid_ticker(ticker):
             
             if model == "XGBoost Regressor":
                 prediction = predictXGBoost(data_set, predictors)
+                
+                #Display data used by the ML model for prediction
+                st.dataframe(data_set.loc[:,["Tomorrow", "Target"] + predictors], use_container_width=True)
+
+                st.write("According to the model, there is a " + str(prediction) + "% chance that " + ticker + " will increase tomorrow" )
+
+                if prediction > 50:
+                    st.markdown("Chances are the stock price will **:blue[increase]** tomorrow")
+                elif prediction < 50:
+                    st.markdown("Chances are the stock price will **:red[decrease]** tomorrow")
+
             elif model == "Random Forest Classifier":
                 prediction = predictRandomForest(data_set, predictors)
 
-            #Display data used by the ML model for prediction
-            st.dataframe(data_set.loc[:,["Tomorrow", "Target"] + predictors], use_container_width=True)
-
-            st.write("According to the model, there is a " + str(prediction) + "% chance that " + ticker + " will increase tomorrow" )
-
-            if prediction > 50:
-                st.markdown("Chances are the stock price will **:blue[increase]** tomorrow")
-            elif prediction < 50:
-                st.markdown("Chances are the stock price will **:red[decrease]** tomorrow")
+                #Display data used by the ML model for prediction
+                st.dataframe(data_set.loc[:,["Tomorrow", "Target"] + predictors], use_container_width=True)
+                #Random Forest model predicts 0s and 1s, nothing in between
+                if prediction == 100:
+                    st.markdown("Chances are the stock price will **:blue[increase]** tomorrow")
+                elif prediction == 0:
+                    st.markdown("Chances are the stock price will **:red[decrease]** tomorrow")
 elif ticker and not(is_valid_ticker(ticker)):
     st.error("Invalid or Delisted Ticker Symbol")
