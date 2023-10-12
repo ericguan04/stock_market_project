@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from plotly import graph_objs as go
 import yfinance as yf
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import precision_score
 
 #Returns True if ticker is valid and returns False when ticker is invalid (exception is thrown)
 def is_valid_ticker(ticker):
@@ -130,19 +131,29 @@ def predictRandomForest(data_set, predictors):
     
     #Make and show the predictions on the test data
     y_pred = model.predict(X_test)
-    #return y_pred
+    #Prediction for tomorrow
+    next_day = round(y_pred[-1]*100, 2)
+
+    #Added predictions to the data_set
+    y_pred = pd.Series(y_pred, index=test_data.index, name="Predictions")
+    combined = pd.concat([test_data["Target"], y_pred], axis=1)
     
     #Prediction for tomorrow
-    return round(y_pred[-1]*100, 2)
+    return next_day, combined
 
 #Create a back testing algorithm to see how accurate the model is.
 #Instead of comparing it with the test set, back testing will see how to model does throughout 
 #the entire data set over the years.
+
+#Backtesting with RandomForest and trendFeatures resulted in 58.66 model accuracy
 def backTest(data_set, predictors, start=2500, step=250):
     all_predictions = []
 
     for i in range(start, data_set.shape[0], step):
-        y_pred = predictXGBoost(data_set, predictors)
-        all_predictions.append(y_pred)
+        _, pred_data_set = predictRandomForest(data_set, predictors)
+        all_predictions.append(pred_data_set)
     
-    return pd.concat(all_predictions)
+    #Dataframe with new predictions based on data throughout the entire set over the years
+    predictions = pd.concat(all_predictions)
+
+    return precision_score(predictions["Target"], predictions["Predictions"])
