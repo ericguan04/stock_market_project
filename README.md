@@ -1,7 +1,7 @@
 ## Stock Market Prediction Project
 Personal project built with:
 * XGBoost: ML Decision Tree algorithm used for predicting tomorrow's stock data
-* sklearn: Random Forest Classifier (ML Decision Tree algorithm) used for prediction
+* scikit-learn: Random Forest Classifier (ML Decision Tree algorithm) used for prediction
 * yfinance: For retrieving up-to-date stock market data sets
 * Streamlit: Used to visualize the project on the web
 
@@ -18,6 +18,8 @@ Uses "Target" as the target
 
 ## Areas to improve: 
 * Work on improving the accuracy of the XGBoost model by adjusting the parameters
-* Complete the back testing algorithm to assess model accuracy
 * Try to host the web app on a platform so it doesn't have to be hosted locally
 * For future projects, add venv and vscode to gitignore file before uploading (better practice)
+
+Backtesting resulted in 58.66% accuracy for the RandomForest model using trendFeatures. 
+* To improve the model's accuracy in the future, I will try using weekly, daily, or even shorter interval stock data.
