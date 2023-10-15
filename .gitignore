@@ -1,6 +1,10 @@
 .venv
 venv
 .vscode
+Dockerfile
+deployment.yml
+nginx.conf
+run.sh
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
