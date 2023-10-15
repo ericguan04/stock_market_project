@@ -1,6 +1,6 @@
 ## Stock Market Prediction Project
 
-# [Link to Stock Market Prediction Application](https://ericguan04-stock-market-project-main-pbfz29.streamlit.app/)
+### [Link to Stock Market Prediction Application](https://ericguan04-stock-market-project-main-pbfz29.streamlit.app/)
 
 Personal project built with:
 * XGBoost: ML Decision Tree algorithm used for predicting tomorrow's stock data
